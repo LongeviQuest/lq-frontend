@@ -1,0 +1,479 @@
+directive @embedded on OBJECT
+
+directive @collection(name: String!) on OBJECT
+
+directive @index(name: String!) on FIELD_DEFINITION
+
+directive @resolver(
+  name: String
+  paginated: Boolean! = false
+) on FIELD_DEFINITION
+
+directive @relation(name: String) on FIELD_DEFINITION
+
+directive @unique(index: String) on FIELD_DEFINITION
+
+# 'Address' input values
+input AddressInput {
+  street: String
+  city: String
+  state: String
+  zipCode: String
+}
+
+# 'CreditCard' input values
+input CreditCardInput {
+  network: String!
+  number: String!
+}
+
+# 'Customer' input values
+input CustomerInput {
+  firstName: String!
+  lastName: String!
+  address: AddressInput!
+  telephone: String!
+  creditCard: CreditCardInput!
+}
+
+scalar Date
+
+type Mutation {
+  # Create a new document in the collection of 'Order'
+  createOrder(
+    # 'Order' input values
+    data: OrderInput!
+  ): Order!
+
+  # Delete an existing document in the collection of 'Order'
+  deleteOrder(
+    # The 'Order' document's ID
+    id: ID!
+  ): Order
+
+  # Update an existing document in the collection of 'Order'
+  updateOrder(
+    # The 'Order' document's ID
+    id: ID!
+
+    # 'Order' input values
+    data: OrderInput!
+  ): Order
+
+  # Partially updates an existing document in the collection of 'Store'. It only modifies the values that are specified in the arguments. During execution, it verifies that required fields are not set to 'null'.
+  partialUpdateStore(
+    # The 'Store' document's ID
+    id: ID!
+
+    # 'Store' input values
+    data: PartialUpdateStoreInput!
+  ): Store
+
+  # Update an existing document in the collection of 'Customer'
+  updateCustomer(
+    # The 'Customer' document's ID
+    id: ID!
+
+    # 'Customer' input values
+    data: CustomerInput!
+  ): Customer
+
+  # Delete an existing document in the collection of 'Store'
+  deleteStore(
+    # The 'Store' document's ID
+    id: ID!
+  ): Store
+  submitOrder(customerId: ID!, products: [SubmitOrderProductInput]): Order!
+
+  # Create a new document in the collection of 'Store'
+  createStore(
+    # 'Store' input values
+    data: StoreInput!
+  ): Store!
+
+  # Delete an existing document in the collection of 'Customer'
+  deleteCustomer(
+    # The 'Customer' document's ID
+    id: ID!
+  ): Customer
+
+  # Update an existing document in the collection of 'Store'
+  updateStore(
+    # The 'Store' document's ID
+    id: ID!
+
+    # 'Store' input values
+    data: StoreInput!
+  ): Store
+
+  # Create a new document in the collection of 'Product'
+  createProduct(
+    # 'Product' input values
+    data: ProductInput!
+  ): Product!
+
+  # Partially updates an existing document in the collection of 'Order'. It only modifies the values that are specified in the arguments. During execution, it verifies that required fields are not set to 'null'.
+  partialUpdateOrder(
+    # The 'Order' document's ID
+    id: ID!
+
+    # 'Order' input values
+    data: PartialUpdateOrderInput!
+  ): Order
+
+  # Update an existing document in the collection of 'Product'
+  updateProduct(
+    # The 'Product' document's ID
+    id: ID!
+
+    # 'Product' input values
+    data: ProductInput!
+  ): Product
+
+  # Create a new document in the collection of 'Customer'
+  createCustomer(
+    # 'Customer' input values
+    data: CustomerInput!
+  ): Customer!
+
+  # Partially updates an existing document in the collection of 'Product'. It only modifies the values that are specified in the arguments. During execution, it verifies that required fields are not set to 'null'.
+  partialUpdateProduct(
+    # The 'Product' document's ID
+    id: ID!
+
+    # 'Product' input values
+    data: PartialUpdateProductInput!
+  ): Product
+
+  # Delete an existing document in the collection of 'Product'
+  deleteProduct(
+    # The 'Product' document's ID
+    id: ID!
+  ): Product
+
+  # Partially updates an existing document in the collection of 'Customer'. It only modifies the values that are specified in the arguments. During execution, it verifies that required fields are not set to 'null'.
+  partialUpdateCustomer(
+    # The 'Customer' document's ID
+    id: ID!
+
+    # 'Customer' input values
+    data: PartialUpdateCustomerInput!
+  ): Customer
+}
+
+# Allow manipulating the relationship between the types 'Order' and 'Customer' using the field 'Order.customer'.
+input OrderCustomerRelation {
+  # Create a document of type 'Customer' and associate it with the current document.
+  create: CustomerInput
+
+  # Connect a document of type 'Customer' with the current document using its ID.
+  connect: ID
+}
+
+# 'Order' input values
+input OrderInput {
+  customer: OrderCustomerRelation
+  cart: [ProductCartInput!]!
+  status: String!
+  creationDate: Time!
+  shipDate: Time
+  shipAddress: AddressInput!
+  creditCard: CreditCardInput!
+}
+
+# 'Address' input values
+input PartialUpdateAddressInput {
+  street: String
+  city: String
+  state: String
+  zipCode: String
+}
+
+# 'CreditCard' input values
+input PartialUpdateCreditCardInput {
+  network: String
+  number: String
+}
+
+# 'Customer' input values
+input PartialUpdateCustomerInput {
+  firstName: String
+  lastName: String
+  address: PartialUpdateAddressInput
+  telephone: String
+  creditCard: PartialUpdateCreditCardInput
+}
+
+# 'Order' input values
+input PartialUpdateOrderInput {
+  customer: OrderCustomerRelation
+  cart: [PartialUpdateProductCartInput!]
+  status: String
+  creationDate: Time
+  shipDate: Time
+  shipAddress: PartialUpdateAddressInput
+  creditCard: PartialUpdateCreditCardInput
+}
+
+# 'ProductCart' input values
+input PartialUpdateProductCartInput {
+  product: ID
+  quantity: Int
+  price: Float
+}
+
+# 'Product' input values
+input PartialUpdateProductInput {
+  name: String
+  description: String
+  price: Float
+  store: ProductStoreRelation
+  quantity: Int
+  backorderLimit: Int
+  backordered: Boolean
+}
+
+# 'Store' input values
+input PartialUpdateStoreInput {
+  name: String
+  address: PartialUpdateAddressInput
+}
+
+# 'ProductCart' input values
+input ProductCartInput {
+  product: ID!
+  quantity: Int!
+  price: Float!
+}
+
+# Allow manipulating the relationship between the types 'ProductCart' and 'Product' using the field 'ProductCart.product'.
+input ProductCartProductRelation {
+  # Create a document of type 'Product' and associate it with the current document.
+  create: ProductInput
+
+  # Connect a document of type 'Product' with the current document using its ID.
+  connect: ID
+}
+
+# 'Product' input values
+input ProductInput {
+  name: String!
+  description: String!
+  price: Float!
+  store: ProductStoreRelation
+  quantity: Int!
+  backorderLimit: Int!
+  backordered: Boolean!
+}
+
+# Allow manipulating the relationship between the types 'Product' and 'Store' using the field 'Product.store'.
+input ProductStoreRelation {
+  # Create a document of type 'Store' and associate it with the current document.
+  create: StoreInput
+
+  # Connect a document of type 'Store' with the current document using its ID.
+  connect: ID
+}
+
+# 'Store' input values
+input StoreInput {
+  name: String!
+  address: AddressInput
+}
+
+input SubmitOrderProductInput {
+  productId: ID!
+  quantity: Int!
+}
+
+type Address {
+  street: String
+  city: String
+  state: String
+  zipCode: String
+}
+
+type CreditCard {
+  network: String!
+  number: String!
+}
+
+type Note {
+  # The document's ID.
+  _id: ID!
+  site: String!
+  room: String!
+  note: String!
+  # The document's timestamp.
+  _ts: Long!
+}
+
+type Customer {
+  # The document's ID.
+  _id: ID!
+  lastName: String!
+  firstName: String!
+  creditCard: CreditCard!
+  address: Address!
+  telephone: String!
+
+  # The document's timestamp.
+  _ts: Long!
+}
+
+# The pagination object for elements of type 'Customer'.
+type CustomerPage {
+  # The elements of type 'Customer' in this page.
+  data: [Customer]!
+
+  # A cursor for elements coming after the current page.
+  after: String
+
+  # A cursor for elements coming before the current page.
+  before: String
+}
+
+type Order {
+  shipDate: Time
+  cart: [ProductCart!]!
+
+  # The document's ID.
+  _id: ID!
+  shipAddress: Address!
+  creditCard: CreditCard!
+  status: String!
+  customer: Customer!
+  creationDate: Time!
+
+  # The document's timestamp.
+  _ts: Long!
+}
+
+# The pagination object for elements of type 'Order'.
+type OrderPage {
+  # The elements of type 'Order' in this page.
+  data: [Order]!
+
+  # A cursor for elements coming after the current page.
+  after: String
+
+  # A cursor for elements coming before the current page.
+  before: String
+}
+
+type Product {
+  name: String!
+  quantity: Int!
+  backorderLimit: Int!
+  description: String!
+
+  # The document's ID.
+  _id: ID!
+  price: Float!
+  store: Store!
+  backordered: Boolean!
+
+  # The document's timestamp.
+  _ts: Long!
+}
+
+type ProductCart {
+  product: Product!
+  quantity: Int!
+  price: Float!
+}
+
+# The pagination object for elements of type 'Product'.
+type ProductPage {
+  # The elements of type 'Product' in this page.
+  data: [Product]!
+
+  # A cursor for elements coming after the current page.
+  after: String
+
+  # A cursor for elements coming before the current page.
+  before: String
+}
+
+type Query {
+  # Find a document from the collection of 'Product' by its id.
+  findProductByID(
+    # The 'Product' document's ID
+    id: ID!
+  ): Product
+
+  allNotes(_size: Int, _cursor: String): Note!
+
+  # Find a document from the collection of 'Order' by its id.
+  findOrderByID(
+    # The 'Order' document's ID
+    id: ID!
+  ): Order
+  allCustomers(
+    # The number of items to return per page.
+    _size: Int
+
+    # The pagination cursor.
+    _cursor: String
+  ): CustomerPage!
+  allProducts(
+    # The number of items to return per page.
+    _size: Int
+
+    # The pagination cursor.
+    _cursor: String
+  ): ProductPage!
+  allStores(
+    # The number of items to return per page.
+    _size: Int
+
+    # The pagination cursor.
+    _cursor: String
+  ): StorePage!
+  allOrders(
+    # The number of items to return per page.
+    _size: Int
+
+    # The pagination cursor.
+    _cursor: String
+  ): OrderPage!
+
+  # Find a document from the collection of 'Store' by its id.
+  findStoreByID(
+    # The 'Store' document's ID
+    id: ID!
+  ): Store
+
+  # Find a document from the collection of 'Customer' by its id.
+  findCustomerByID(
+    # The 'Customer' document's ID
+    id: ID!
+  ): Customer
+}
+
+type Store {
+  # The document's ID.
+  _id: ID!
+
+  # The document's timestamp.
+  _ts: Long!
+  name: String!
+  address: Address
+}
+
+# The pagination object for elements of type 'Store'.
+type StorePage {
+  # The elements of type 'Store' in this page.
+  data: [Store]!
+
+  # A cursor for elements coming after the current page.
+  after: String
+
+  # A cursor for elements coming before the current page.
+  before: String
+}
+
+scalar Time
+
+# The `Long` scalar type represents non-fractional signed whole numeric values. Long can represent values between -(2^63) and 2^63 - 1.
+scalar Long

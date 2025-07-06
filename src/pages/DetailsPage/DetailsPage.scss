@@ -1,0 +1,121 @@
+.DetailsPageWrapper {
+  margin-top: 4rem;
+
+  p {
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.85;
+    color: #444444;
+  }
+
+  .HeroSection {
+    padding-top: 4rem;
+    background: linear-gradient(180deg, #e9fbf4 0%, #c2ecfe 100%);
+    border-radius: 0px 0px 120px 120px;
+    height: 100%;
+    min-width: 100%;
+
+    .ContainerFluid {
+      max-width: 1080px;
+      width: 100%;
+      position: relative;
+      margin-right: auto;
+      margin-left: auto;
+      padding-right: 0 !important;
+      padding-left: 0 !important;
+
+      .RowContainer {
+        width: 100%;
+        flex-wrap: wrap;
+
+        .ColumnContainer {
+          flex: 0 0 auto;
+          width: 100%;
+        }
+      }
+
+      @media (min-width: 992px) {
+        padding-right: 1rem !important;
+        padding-left: 1rem !important;
+
+        .RowContainer {
+          .ColumnContainer {
+            flex: 0 0 auto;
+            width: 75%;
+          }
+        }
+      }
+
+      @media screen and (max-width: 992px) {
+        overflow-x: hidden;
+        z-index: 1;
+      }
+    }
+
+    .HeroContainer {
+      margin: 0 auto;
+      width: 90%;
+      max-width: 1080px;
+
+      @media screen and (max-width: 992px) {
+        margin-bottom: 6rem;
+      }
+      @media screen and (max-width: 768px) {
+        margin-bottom: 2rem;
+
+        .ColumnsContainer {
+          flex-wrap: wrap;
+        }
+      }
+    }
+  }
+
+  .BiographySection {
+    margin-top: -2rem;
+    padding: 5.5rem 0 2rem;
+    position: relative;
+
+    @media screen and (max-width: 992px) {
+      background: linear-gradient(
+        to bottom,
+        rgba(67, 187, 171, 0.125) 0%,
+        white 100px
+      );
+    }
+  }
+
+  .GallerySection {
+    margin-top: -2rem;
+    padding: 5.5rem 0 2rem;
+    position: relative;
+  }
+
+  .Container {
+    max-width: 1080px;
+    position: relative;
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * 0.5);
+    padding-left: calc(var(--bs-gutter-x) * 0.5);
+    margin-right: auto;
+    margin-left: auto;
+
+    .RowContainer {
+      flex-wrap: wrap;
+      width: 100%;
+
+      .ColumnContainer {
+        flex-direction: column;
+        flex: 0 0 auto;
+        width: 100%;
+
+        @media (min-width: 992px) {
+          padding-right: 3rem !important;
+          flex: 0 0 auto;
+          width: 66.66666667%;
+        }
+      }
+    }
+  }
+}

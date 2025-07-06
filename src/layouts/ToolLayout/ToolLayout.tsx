@@ -1,0 +1,175 @@
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import './ToolLayout.scss';
+import cx from 'classnames';
+import footerJsonData from '../../data/footer-data.json';
+import { Flex, Image, Text } from '@chakra-ui/react';
+
+interface FooterData {
+  label: string;
+  items: {
+    label: string;
+    link: string;
+  }[];
+}
+
+export const ToolLayout = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleScrollNavigation = (link: string) => {
+    const temp = link.split('#');
+
+    navigate(temp[0]);
+    setTimeout(() => {
+      const targetElement = document.getElementById(temp[1]);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
+  const renderItems = (
+    items: {
+      label: string;
+      link: string;
+    }[]
+  ) => {
+    let result = [];
+    result = items.map((entry, index) => {
+      if (entry.link.includes('#')) {
+        return (
+          <Text
+            key={index}
+            className="link"
+            onClick={() => handleScrollNavigation(entry.link)}
+          >
+            {entry.label}
+          </Text>
+        );
+      } else {
+        return (
+          <a key={index} className="link" href={entry.link}>
+            {entry.label}
+          </a>
+        );
+      }
+    });
+    return result;
+  };
+
+  return (
+    <div className="lq_container">
+      <header>
+        <Flex
+          direction={'column'}
+          w={'100%'}
+          align={'end'}
+          justifyContent={'space-between'}
+          wrap={'wrap'}
+        >
+          <div id="google_translate_element"></div>
+          <Flex
+            w={'100%'}
+            align={'center'}
+            justifyContent={'space-between'}
+            wrap={'wrap'}
+          >
+            <a className="navbar-brand" href="/atlas/">
+              <Image
+                width={'auto'}
+                height={'auto'}
+                loading="lazy"
+                src="https://longeviquest.com/wp-content/uploads/2022/12/Horizontal_Fullcolor.svg"
+                alt="LongeviQuest brand logo"
+              />
+              <span>|</span>
+              <h2>Atlas</h2>
+            </a>
+            <div className="nav_links">
+              <a key="atlas" href="/atlas/">
+                Home
+              </a>
+              <a key="map" href="/atlas/world">
+                World
+              </a>
+              <a key="living" href="/atlas/living">
+                Living
+              </a>
+              <a key="women" href="/atlas/women">
+                Women
+              </a>
+              <a key="men" href="/atlas/men">
+                Men
+              </a>
+              <a key="deaths" href="/atlas/deaths">
+                Recent Deaths
+              </a>
+              <a key="validations" href="/atlas/validations">
+                Recent Validations
+              </a>
+              <a key="emigrant" href="/atlas/emigrant">
+                Emigrants
+              </a>
+            </div>
+          </Flex>
+        </Flex>
+      </header>
+      <div
+        className={cx('kernel', {
+          fullWidth: location.pathname.includes('portal'),
+        })}
+      >
+        {/* <iframe
+          style={{ margin: '0 auto' }}
+          src="https://www.lduhtrp.net/widgetcode-65754722ace159f5090b2a02-101009766?mouseover=Y&target=_top"
+          width="680"
+          height="250"
+          frameBorder={0}
+          marginWidth={0}
+          marginHeight={0}
+          scrolling="no"
+        ></iframe> */}
+        <Outlet />
+      </div>
+      <footer className="footer">
+        <div className="footer-container">
+          <div className="logo-container">
+            <Image
+              width={'auto'}
+              height={'auto'}
+              loading="lazy"
+              src="https://longeviquest.com/wp-content/uploads/2024/01/longeviquest-logo-600-white-text.png"
+              alt="LongeviQuest"
+            ></Image>
+          </div>
+          <div className="row">
+            {footerJsonData.map((column: FooterData, footerIndex) => {
+              return (
+                <div key={footerIndex} className="column">
+                  <div className="heading">{column.label}</div>
+                  {renderItems(column.items)}
+                </div>
+              );
+            })}
+          </div>
+          <div className="h-divider"></div>
+          <div className="copyright">
+            © 2025 LongeviQuest. All Rights Reserved.
+            <div className="privacy">
+              <a className="link" href={'https://longeviquest.com/privacy/'}>
+                Privacy Policy
+              </a>
+              <div className="v-divider">|</div>
+              <a
+                className="link"
+                href={'https://longeviquest.com/terms-of-service/'}
+              >
+                Terms of Service
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};

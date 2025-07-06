@@ -1,0 +1,53 @@
+AxiosError: Request failed with status code 401
+    at settle (C:\Users\Carlos\AppData\Roaming\npm\node_modules\@ced\cli\node_modules\axios\dist\node\axios.cjs:1900:12)
+    at IncomingMessage.handleStreamEnd (C:\Users\Carlos\AppData\Roaming\npm\node_modules\@ced\cli\node_modules\axios\dist\node\axios.cjs:2952:11)
+    at IncomingMessage.emit (node:events:525:35)
+    at endReadableNT (node:internal/streams/readable:1358:12)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+Complete error data:
+{
+  "message": "Request failed with status code 401",
+  "name": "AxiosError",
+  "stack": "AxiosError: Request failed with status code 401\n    at settle (C:\\Users\\Carlos\\AppData\\Roaming\\npm\\node_modules\\@ced\\cli\\node_modules\\axios\\dist\\node\\axios.cjs:1900:12)\n    at IncomingMessage.handleStreamEnd (C:\\Users\\Carlos\\AppData\\Roaming\\npm\\node_modules\\@ced\\cli\\node_modules\\axios\\dist\\node\\axios.cjs:2952:11)\n    at IncomingMessage.emit (node:events:525:35)\n    at endReadableNT (node:internal/streams/readable:1358:12)\n    at processTicksAndRejections (node:internal/process/task_queues:83:21)",
+  "config": {
+    "transitional": {
+      "silentJSONParsing": true,
+      "forcedJSONParsing": true,
+      "clarifyTimeoutError": false
+    },
+    "adapter": [
+      "xhr",
+      "http"
+    ],
+    "transformRequest": [
+      null
+    ],
+    "transformResponse": [
+      null
+    ],
+    "timeout": 120000,
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+    "maxContentLength": -1,
+    "maxBodyLength": -1,
+    "env": {
+      "Blob": null
+    },
+    "headers": {
+      "Accept": "application/json, text/plain, */*",
+      "cli-token": "92e9388dbdc1f0faad2931beedf13964f4202e1488cac5c2d8148a56f309754327b139c7486ac066e7080c71dd06491bd89f",
+      "User-Agent": "axios/1.3.4",
+      "Accept-Encoding": "gzip, compress, deflate, br"
+    },
+    "baseURL": "https://core-api.cloudedgedistribution.com",
+    "method": "get",
+    "url": "/projects/demo/environments/development/subsystems/spa/ecosystem/",
+    "axios-retry": {
+      "retryCount": 0,
+      "lastRequestTime": 1683209858267
+    }
+  },
+  "code": "ERR_BAD_REQUEST",
+  "status": 401
+}

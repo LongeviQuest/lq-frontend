@@ -1,0 +1,9 @@
+type Note {
+  site: String!
+  note: String!
+  room: String!
+}
+
+type Query {
+  allNotes: [Note!]
+}

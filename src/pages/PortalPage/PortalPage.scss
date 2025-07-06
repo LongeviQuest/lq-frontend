@@ -1,0 +1,81 @@
+.resultsTable {
+  padding: 4rem 0 4rem 0;
+}
+
+.map-section {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  align-items: center;
+  gap: 4rem;
+  margin-bottom: 2rem;
+
+  .country-flag {
+    border: 2px solid gold;
+    border-radius: 5px;
+  }
+
+  .country-name {
+    text-transform: uppercase;
+    color: black;
+    border: 2px solid #102f55;
+    border-radius: 5px;
+  }
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas: 'link-1 link-2 link-3' 'summary poster-image poster-image';
+  column-gap: 5rem;
+  padding: 4rem 0 4rem 0;
+
+  .buttonLink {
+    all: unset;
+    display: flex;
+    justify-content: center;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 0.5rem 0 0.5rem 0;
+    font-size: large;
+    color: white;
+    transition: all 0.3s;
+
+    &.link-1 {
+      grid-area: link-1;
+    }
+    &.link-2 {
+      grid-area: link-2;
+    }
+    &.link-3 {
+      grid-area: link-3;
+    }
+
+    &:hover {
+      text-decoration: none;
+      background-color: white;
+      color: black;
+      cursor: pointer;
+    }
+  }
+
+  .summary {
+    grid-area: summary;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 2;
+    text-align: justify;
+    color: white;
+  }
+  .poster-image {
+    grid-area: poster-image;
+    width: 100%;
+  }
+}
+
+.loadingSpinner {
+  width: 100%;
+  min-height: 50rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

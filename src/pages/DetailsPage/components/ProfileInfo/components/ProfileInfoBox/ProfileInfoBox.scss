@@ -1,0 +1,29 @@
+.ProfileInfoBox {
+  border-bottom: 1px solid rgba(0, 48, 88, 0.5);
+  padding: 1rem 0;
+  position: relative;
+
+  .BoxTitle {
+    color: #43bbab;
+    display: block;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .BoxDetail {
+    color: #003058;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.25;
+    opacity: 0.9;
+  }
+
+  @media screen and (max-width: 992px) {
+    border: none;
+    padding: 0;
+  }
+}

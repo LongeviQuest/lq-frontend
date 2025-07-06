@@ -1,0 +1,23 @@
+{
+  "projectId": "atlas",
+  "defaultEnvironment": "development",
+  "subsystemId": "atlas",
+  "config": {
+    "path": "./src/services/configuration.ts",
+    "format": "esModule",
+    "filesWithConfigExpressions": ["public/index.html", "./src/Kernel,tsx"]
+  },
+  "build": {
+    "steps": [
+      {
+        "name": "Install",
+        "command": "npm install"
+      },
+      {
+        "name": "Build",
+        "command": "npm run build"
+      }
+    ],
+    "artifact": "./build"
+  }
+}

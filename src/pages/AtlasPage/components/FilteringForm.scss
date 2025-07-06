@@ -1,0 +1,17 @@
+.filter-container {
+  grid-template-columns: 1fr 1fr;
+  margin: 1rem 0 1rem 0;
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  column-gap: 4rem;
+  row-gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+
+  .input {
+    display: grid;
+    grid-template-columns: 0.25fr 1fr;
+    align-items: center;
+    gap: 1rem;
+  }
+}

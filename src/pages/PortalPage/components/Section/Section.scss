@@ -1,0 +1,21 @@
+.customSection {
+  width: 100%;
+  min-height: 10rem;
+  display: flex;
+  align-items: center;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &.primary {
+    background-color: #102f55;
+  }
+
+  .content {
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1350px;
+  }
+}

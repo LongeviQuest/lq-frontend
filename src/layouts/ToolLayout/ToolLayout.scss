@@ -1,0 +1,175 @@
+.lq_container {
+  height: 100%;
+  background: white;
+  header {
+    width: 100%;
+    max-width: 1350px;
+    margin: 20px auto;
+    height: 50px;
+    display: flex;
+    flex-wrap: inherit;
+    align-items: center;
+    justify-content: space-between;
+    .nav_links {
+      display: flex;
+      flex-direction: row;
+      align-content: space-between;
+      a {
+        margin: 0 10px;
+        border: 1px solid #f2f2f2;
+        padding: 5px 10px;
+        border-radius: 5px;
+        &:hover {
+          border: 1px solid black;
+        }
+      }
+    }
+    .navbar-brand {
+      margin-right: 0;
+      padding: 0 0 3px;
+      display: flex;
+      align-items: center;
+      span {
+        font-size: 2em;
+        margin: 0 3px;
+        color: #003058;
+        opacity: 0.7;
+      }
+      h2 {
+        font-size: 2em;
+        color: #003058;
+        opacity: 0.7;
+      }
+      img {
+        max-height: 37px;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      &:hover {
+        span,
+        h2 {
+          opacity: 1;
+        }
+      }
+    }
+  }
+  .kernel {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1350px;
+    padding-bottom: 2rem;
+
+    &.fullWidth {
+      margin: 0;
+      max-width: none;
+    }
+  }
+  h1 {
+    font-size: 5em;
+    color: #003058;
+  }
+
+  .footer {
+    background-color: #003058;
+    color: white;
+    font-size: small;
+    padding-top: 6rem;
+    padding-bottom: 4rem;
+
+    .footer-container {
+      display: flex;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1350px;
+      flex-direction: column;
+      gap: 2rem;
+
+      .logo-container {
+        padding-left: 2rem;
+        width: 15rem;
+      }
+
+      .row {
+        display: flex;
+        padding: 1rem;
+        gap: 1rem;
+        justify-content: space-between;
+
+        .column {
+          display: flex;
+          flex-direction: column;
+          padding: 0 1rem;
+
+          .heading {
+            font-size: medium;
+            font-weight: 700;
+            margin-bottom: 1rem;
+          }
+        }
+      }
+      .link {
+        cursor: pointer;
+        text-decoration: none;
+        margin-bottom: 0.25rem;
+        opacity: 0.8;
+        &:hover {
+          opacity: 1;
+        }
+      }
+
+      .h-divider {
+        border: 1px solid #4d6f8a;
+      }
+
+      .v-divider {
+        font-size: large;
+        opacity: 0.8;
+      }
+
+      .copyright {
+        display: flex;
+        padding-bottom: 40px;
+        justify-content: space-between;
+
+        .privacy {
+          display: flex;
+          gap: 0.25rem;
+          align-items: baseline;
+        }
+      }
+    }
+  }
+}
+
+.goog-logo-link {
+  display: none !important;
+}
+.VIpgJd-ZVi9od-l4eHX-hSRGPd {
+  display: none !important;
+}
+
+.skiptranslate {
+  &.goog-te-gadget {
+    font-size: 0px;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .lq_container {
+    .footer {
+      .footer-container {
+        .row {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr 1fr;
+          row-gap: 2rem;
+        }
+        .copyright {
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
+}

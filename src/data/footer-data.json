@@ -1,0 +1,156 @@
+[
+  {
+    "label": "Supercentenarians",
+    "items": [
+      {
+        "label": "Directory",
+        "link": "https://longeviquest.com/atlas/world"
+      },
+      {
+        "label": "Methodology",
+        "link": "https://longeviquest.com/methodology/"
+      },
+      {
+        "label": "Submit Claim",
+        "link": "https://longeviquest.com/submit-claim/"
+      },
+      {
+        "label": "News",
+        "link": "https://longeviquest.com/news/"
+      }
+    ]
+  },
+  {
+    "label": "About Us",
+    "items": [
+      {
+        "label": "About Us",
+        "link": "https://longeviquest.com/about-us/"
+      },
+      {
+        "label": "Advertising",
+        "link": "https://advertising.longeviquest.com/"
+      },
+      {
+        "label": "Cookies",
+        "link": "https://longeviquest.com/terms-of-service/"
+      },
+      {
+        "label": "GDPR",
+        "link": "https://longeviquest.com/privacy/"
+      },
+      {
+        "label": "Support",
+        "link": "mailto:support@longeviquest.com"
+      }
+    ]
+  },
+  {
+    "label": "Atlas",
+    "items": [
+      {
+        "label": "World",
+        "link": "/atlas/"
+      },
+      {
+        "label": "Living",
+        "link": "/atlas/living"
+      },
+      {
+        "label": "Recent Deaths",
+        "link": "/atlas/deaths"
+      },
+      {
+        "label": "Recent Validations",
+        "link": "/atlas/validations"
+      },
+      {
+        "label": "Emigrants",
+        "link": "/atlas/emigrant"
+      }
+    ]
+  },
+  {
+    "label": "Women",
+    "items": [
+      {
+        "label": "Living Female",
+        "link": "/atlas/living?gender=female"
+      },
+      {
+        "label": "Recent Female Deaths",
+        "link": "/atlas/deaths?gender=female"
+      },
+      {
+        "label": "Recent Female Validations",
+        "link": "/atlas/validations?gender=female"
+      },
+      {
+        "label": "Female Emigrants",
+        "link": "/atlas/emigrant?gender=female"
+      }
+    ]
+  },
+  {
+    "label": "Men",
+    "items": [
+      {
+        "label": "Living Male",
+        "link": "/atlas/living?gender=male"
+      },
+      {
+        "label": "Recent Male Deaths",
+        "link": "/atlas/deaths?gender=male"
+      },
+      {
+        "label": "Recent Male Validations",
+        "link": "/atlas/validations?gender=male"
+      },
+      {
+        "label": "Male Emigrants",
+        "link": "/atlas/emigrant?gender=male"
+      }
+    ]
+  },
+  {
+    "label": "Geography",
+    "items": [
+      {
+        "label": "World",
+        "link": "/atlas/#world-section"
+      },
+      {
+        "label": "Europe",
+        "link": "/atlas/#europe-section"
+      },
+      {
+        "label": "Africa",
+        "link": "/atlas/#africa-section"
+      },
+      {
+        "label": "North America",
+        "link": "/atlas/#north-america-section"
+      },
+      {
+        "label": "Central America",
+        "link": "/atlas/#central-america-section"
+      },
+      {
+        "label": "South America",
+        "link": "/atlas/#south-america-section"
+      },
+      {
+        "label": "Middle East",
+        "link": "/atlas/#middle-east-section"
+      },
+      {
+        "label": "Asia",
+        "link": "/atlas/#asia-section"
+      },
+      {
+        "label": "Oceania",
+        "link": "/atlas/#oceania-section"
+      }
+    ]
+  }
+]
