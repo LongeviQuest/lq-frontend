@@ -3,6 +3,7 @@ import './ToolLayout.scss';
 import cx from 'classnames';
 import footerJsonData from '../../data/footer-data.json';
 import { Flex, Image, Text } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
 
 interface FooterData {
   label: string;
@@ -11,10 +12,38 @@ interface FooterData {
     link: string;
   }[];
 }
-
+interface SiteSettings {
+  header_logo?: {
+    url: string;
+  };
+  footer_logo?: {
+    url: string;
+  };
+}
 export const ToolLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [siteLogo, setSiteLogo] = useState<string | null>(null);
+  const [footerLogo, setFooterLogo] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchLogos = async () => {
+      try {
+        const response = await fetch(
+          'https://longeviquest.com/wp-json/atlas-settings/v1/data'
+        );
+        const data: SiteSettings = await response.json();
+
+        if (data.header_logo) setSiteLogo(data.header_logo.url);
+        if (data.footer_logo) setFooterLogo(data.footer_logo.url);
+      } catch (error) {
+        console.error('Error fetching site logos:', error);
+      }
+    };
+
+    fetchLogos();
+  }, []);
 
   const handleScrollNavigation = (link: string) => {
     const temp = link.split('#');
@@ -79,7 +108,7 @@ export const ToolLayout = () => {
                 width={'auto'}
                 height={'auto'}
                 loading="lazy"
-                src="https://longeviquest.com/wp-content/uploads/2022/12/Horizontal_Fullcolor.svg"
+                src={siteLogo || "https://longeviquest.com/wp-content/uploads/2022/12/Horizontal_Fullcolor.svg?uyuy"}
                 alt="LongeviQuest brand logo"
               />
               <span>|</span>
@@ -138,7 +167,7 @@ export const ToolLayout = () => {
               width={'auto'}
               height={'auto'}
               loading="lazy"
-              src="https://longeviquest.com/wp-content/uploads/2024/01/longeviquest-logo-600-white-text.png"
+              src={footerLogo || "https://longeviquest.com/wp-content/uploads/2024/01/longeviquest-logo-600-white-text.png"}
               alt="LongeviQuest"
             ></Image>
           </div>
