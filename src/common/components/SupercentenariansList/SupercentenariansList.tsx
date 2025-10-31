@@ -121,6 +121,9 @@ export const SupercentenariansList: FunctionComponent<MapInfo> = props => {
             {props.isLoaded &&
               props.content.map((value, index) => {
                 const personalInfo = value.acf.personal_information;
+                if (personalInfo === null) {
+                  return null;
+                }
                 return (
                   <Tr id={value.slug} key={index}>
                     <Td id="Rank" width={'5rem'}>
