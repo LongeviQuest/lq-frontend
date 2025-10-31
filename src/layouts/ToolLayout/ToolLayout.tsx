@@ -1,23 +1,37 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import './ToolLayout.scss';
 import cx from 'classnames';
-import footerJsonData from '../../data/footer-data.json';
+//import footerJsonData from '../../data/footer-data.json';
 import { Flex, Image, Text } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
-interface FooterData {
-  label: string;
-  items: {
-    label: string;
-    link: string;
-  }[];
+interface FooterLink {
+  title: string;
+  url: string;
+  target: string;
 }
+
+interface FooterColumn {
+  title: string;
+  links: FooterLink[];
+}
+
 interface SiteSettings {
   header_logo?: {
     url: string;
   };
   footer_logo?: {
     url: string;
+  };
+  [key: `footer_column_${number}`]: {
+    title: string;
+    links: Array<{
+      link: {
+        title: string;
+        url: string;
+        target: string;
+      } | string;
+    }> | false;
   };
 }
 export const ToolLayout = () => {
@@ -26,6 +40,7 @@ export const ToolLayout = () => {
 
   const [siteLogo, setSiteLogo] = useState<string | null>(null);
   const [footerLogo, setFooterLogo] = useState<string | null>(null);
+  const [footerColumns, setFooterColumns] = useState<FooterColumn[]>([]);
 
   useEffect(() => {
     const fetchLogos = async () => {
@@ -33,10 +48,34 @@ export const ToolLayout = () => {
         const response = await fetch(
           'https://longeviquest.com/wp-json/atlas-settings/v1/data'
         );
-        const data: SiteSettings = await response.json();
+        const data: any = await response.json();
 
         if (data.header_logo) setSiteLogo(data.header_logo.url);
         if (data.footer_logo) setFooterLogo(data.footer_logo.url);
+        const columns = Object.keys(data)
+          .filter(key => key.startsWith('footer_column'))
+          .map(key => {
+            const column = data[key];
+            return {
+              title: column.title || '',
+              links: column.links && Array.isArray(column.links)
+                ? column.links
+                    .filter((linkItem: any) => 
+                      linkItem.link && 
+                      typeof linkItem.link !== 'string' &&
+                      linkItem.link.title &&
+                      linkItem.link.url
+                    )
+                    .map((linkItem: any) => ({
+                      title: linkItem.link.title,
+                      url: linkItem.link.url,
+                      target: linkItem.link.target || '_self'
+                    }))
+              : []
+            };
+          });
+
+        setFooterColumns(columns);
       } catch (error) {
         console.error('Error fetching site logos:', error);
       }
@@ -84,6 +123,20 @@ export const ToolLayout = () => {
       }
     });
     return result;
+  };
+
+  const renderFooterLinks = (links: FooterLink[]) => {
+    return links.map((link, index) => (
+      <a 
+        key={index} 
+        className="link" 
+        href={link.url}
+        target={link.target}
+        rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
+      >
+        {link.title}
+      </a>
+    ));
   };
 
   return (
@@ -172,14 +225,12 @@ export const ToolLayout = () => {
             ></Image>
           </div>
           <div className="row">
-            {footerJsonData.map((column: FooterData, footerIndex) => {
-              return (
-                <div key={footerIndex} className="column">
-                  <div className="heading">{column.label}</div>
-                  {renderItems(column.items)}
-                </div>
-              );
-            })}
+            {footerColumns.map((column: FooterColumn, footerIndex) => (
+              <div key={footerIndex} className="column">
+                <div className="heading">{column.title}</div>
+                {renderFooterLinks(column.links)}
+              </div>
+            ))}
           </div>
           <div className="h-divider"></div>
           <div className="copyright">
