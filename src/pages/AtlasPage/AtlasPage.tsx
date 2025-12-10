@@ -5,6 +5,7 @@ import { SupercentenariansList } from '../../common/components/Supercentenarians
 import { Button, Collapse } from '@chakra-ui/react';
 import { FilteringForm } from './components/FilteringForm';
 import _ from 'lodash';
+import MapChart from '../Map/MapChart';
 
 interface AtlasPageProps {
   queryUrl: string;
@@ -24,36 +25,41 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
   const showFilter = props.showFilter ?? true;
   const [showFilterForm, setShowFilterForm] = useState<boolean>(false);
   const [isFetching, setIsFetching] = useState<boolean>(false);
+
   window.document.title = `${props.title} - LongeviQuest Atlas`;
+
   useEffect(() => {
-    const fetch = async () => {
-      setIsFetching(true);
-      await fetchData();
-      setIsFetching(false);
-    };
-    fetch();
+    if (props.title !== 'Japan') {
+      const fetch = async () => {
+        setIsFetching(true);
+        await fetchData();
+        setIsFetching(false);
+      };
+      fetch();
+    }
   }, [props.urlParams]);
 
   const fetchData = async () => {
     const filter: string[] = [];
     _.forEach(Array.from(props.urlParams?.entries() ?? []), x => {
-      const filterElement = `${x[0]}=${x[1]}`;
-      filter.push(filterElement);
+      filter.push(`${x[0]}=${x[1]}`);
     });
 
     const queryUrl =
       filter.length > 0
         ? `${props.queryUrl}?${filter.join('&')}`
         : props.queryUrl;
+
     const response = await fetch(queryUrl);
     const data = await response.json();
     setData(data);
   };
 
+  // Render filter (only if not Japan)
   const renderFilter = () => {
-    if (!showFilter) {
-      return null;
-    }
+    if (props.title === 'Japan') return null;
+    if (!showFilter) return null;
+
     return (
       <div>
         <Button
@@ -63,16 +69,17 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
         >
           Filter Results
         </Button>
-        {
-          <Collapse in={showFilterForm}>
-            <FilteringForm defaultFilters={props.defaultFilters} />
-          </Collapse>
-        }
+        <Collapse in={showFilterForm}>
+          <FilteringForm defaultFilters={props.defaultFilters} />
+        </Collapse>
       </div>
     );
   };
 
+  // Render results (only if not Japan)
   const renderResults = () => {
+    if (props.title === 'Japan') return null;
+
     return (
       <>
         {renderFilter()}
@@ -99,7 +106,20 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
         </div>
       )}
       {props.children}
-      {renderResults()}
+
+      {/* If Japan, show map only */}
+      {props.title === 'Japan' ? (
+        <MapChart
+          config={{
+            center: [130, 35],
+            scale: 1500,
+          }}
+          height={600}
+          location="Japan"
+        />
+      ) : (
+        renderResults()
+      )}
     </div>
   );
 };
