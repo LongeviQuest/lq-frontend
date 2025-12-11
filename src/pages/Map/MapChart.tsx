@@ -21,6 +21,7 @@ export interface IMapProps {
   height?: number;
   sphere?: boolean;
   location?: string;
+  onRegionClick?: (regionName: string) => void;
 }
 
 export const MapChart: FunctionComponent<IMapProps> = props => {
@@ -48,7 +49,7 @@ export const MapChart: FunctionComponent<IMapProps> = props => {
           >
             {({ geographies }) =>
               geographies.map((geo: any) => {
-                const countryName = geo.properties.name;
+                const countryName = props.location === 'Japan' ? geo.properties.nam : geo.properties.name;
                 const lqData = mapData[countryName];
                 const count = lqData ? lqData.count : 0;
                 const lineStr = `${countryName} - ${count}`;
@@ -60,7 +61,11 @@ export const MapChart: FunctionComponent<IMapProps> = props => {
                     data-tooltip-content={lineStr}
                     fill={count > 0 ? 'green' : '#fff'}
                     onClick={() => {
-                      navigate('/atlas/country/' + countryName);
+                      if (props.location === 'Japan' && props.onRegionClick) {
+                        props.onRegionClick(countryName);
+                      } else {
+                        navigate('/atlas/country/' + countryName);
+                      }
                     }}
                     onMouseEnter={event => {}}
                     onMouseLeave={() => {

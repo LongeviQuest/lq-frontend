@@ -6,6 +6,8 @@ import { Button, Collapse } from '@chakra-ui/react';
 import { FilteringForm } from './components/FilteringForm';
 import _ from 'lodash';
 import MapChart from '../Map/MapChart';
+import { configuration } from '../../services/configuration';
+import { useNavigate } from 'react-router-dom';
 
 interface AtlasPageProps {
   queryUrl: string;
@@ -21,6 +23,8 @@ interface AtlasPageProps {
 
 export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
   const [data, setData] = useState<TopSCDataInfo>();
+  const [prefectureData, setPrefectureData] = useState<any[]>([]);
+  const navigate = useNavigate();
   const showHeader = props.showHeader ?? true;
   const showFilter = props.showFilter ?? true;
   const [showFilterForm, setShowFilterForm] = useState<boolean>(false);
@@ -39,6 +43,35 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
     }
   }, [props.urlParams]);
 
+  useEffect(() => {
+    if (props.title === 'Japan') {
+      const transformPrefectureName = (name: string): string => {
+        if (!name || name === 'Unknown') return name;
+        const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
+
+        if (capitalized === 'Tokyo') return 'Tokyo To';
+        if (capitalized === 'Osaka') return 'Osaka Fu';
+        if (capitalized === 'Kyoto') return 'Kyoto Fu';
+        if (capitalized === 'Hokkaido') return 'Hokkai Do';
+        return `${capitalized} Ken`;
+      };
+
+      const fetchPrefectureData = async () => {
+        const country = props.title.toLowerCase();
+        const url = `${configuration.lqDataPlatform.apiUrl}/v1/queries/supercentenarians/sc-count-by-prefecture/${country}`;
+        const response = await fetch(url);
+        const apiData = await response.json();
+        const transformedData = apiData.content.map((item: any) => ({
+          _id: transformPrefectureName(item._id),
+          count: item.count
+        }));
+
+        setPrefectureData(transformedData);
+      };
+      fetchPrefectureData();
+    }
+  }, [props.title]);
+
   const fetchData = async () => {
     const filter: string[] = [];
     _.forEach(Array.from(props.urlParams?.entries() ?? []), x => {
@@ -52,7 +85,21 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
 
     const response = await fetch(queryUrl);
     const data = await response.json();
+    console.log('Fetched data:', data);
     setData(data);
+  };
+
+  const handlePrefectureClick = (prefectureName: string) => {
+    const prefectureForApi = prefectureName
+      .replace(' To', '')
+      .replace(' Fu', '')
+      .replace(' Do', '')
+      .replace(' Ken', '')
+      .replace(/\s+/g, '')
+      .toLowerCase();
+
+    const country = props.title.toLowerCase();
+    navigate(`/atlas/country/${country}/${prefectureForApi}`);
   };
 
   // Render filter (only if not Japan)
@@ -110,12 +157,14 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
       {/* If Japan, show map only */}
       {props.title === 'Japan' ? (
         <MapChart
+          data={prefectureData}
           config={{
             center: [130, 35],
             scale: 1500,
           }}
           height={600}
           location="Japan"
+          onRegionClick={handlePrefectureClick}
         />
       ) : (
         renderResults()

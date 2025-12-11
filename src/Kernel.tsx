@@ -11,6 +11,7 @@ import { EmigrantPage } from './pages/EmigrantPage/EmigrantPage';
 import { AllByContinentPage } from './pages/AllByContinentPage/AllByContinentPage';
 import { AllByDatePage } from './pages/AllByDatePage/AllByDatePage';
 import { AllByCountryPage } from './pages/AllByCountryPage/AllByCountryPage';
+import { AllByPrefecturePage } from './pages/AllByPrefecturePage/AllByPrefecturePage';
 import { EmbedLayout } from './layouts/EmbedLayout/EmbedLayout';
 import { ToolLayout } from './layouts/ToolLayout/ToolLayout';
 import { useEffect } from 'react';
@@ -54,6 +55,7 @@ export const Kernel = () => {
           <Route path="portal/:country" element={<PortalCountryPage />} />
           <Route path="continent/:continen" element={<AllByContinentPage />} />
           <Route path="country/:country" element={<AllByCountryPage />} />
+          <Route path="country/:country/:prefecture" element={<AllByPrefecturePage />} />
           <Route path="date" element={<AllByDatePage />} />
         </Route>
       </Route>
