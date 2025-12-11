@@ -10,15 +10,18 @@ import _ from 'lodash';
 import { Tooltip } from 'react-tooltip';
 import { useNavigate } from 'react-router-dom';
 import './MapChart.scss';
+import JapanFeatures from './japan-features.json';
 
 const geoUrl = 'features.json';
 
 export interface IMapProps {
-  data: any;
+  data?: any;
   config: any;
-  title: string;
+  title?: string;
   height?: number;
   sphere?: boolean;
+  location?: string;
+  onRegionClick?: (regionName: string) => void;
 }
 
 export const MapChart: FunctionComponent<IMapProps> = props => {
@@ -28,7 +31,7 @@ export const MapChart: FunctionComponent<IMapProps> = props => {
 
   return (
     <div className="MapContainer">
-      <h2 id={props.title.toLocaleLowerCase().replace(' ', '-') + '-section'}>
+      <h2 id={props.title?.toLocaleLowerCase().replace(' ', '-') + '-section'}>
         {props.title}
       </h2>
       <div className="Map">
@@ -41,10 +44,12 @@ export const MapChart: FunctionComponent<IMapProps> = props => {
           )}
           <Graticule stroke="#f2f2f2" strokeWidth={1} />
 
-          <Geographies geography={geoUrl}>
+          <Geographies
+            geography={props.location === 'Japan' ? JapanFeatures : geoUrl}
+          >
             {({ geographies }) =>
               geographies.map((geo: any) => {
-                const countryName = geo.properties.name;
+                const countryName = props.location === 'Japan' ? geo.properties.nam : geo.properties.name;
                 const lqData = mapData[countryName];
                 const count = lqData ? lqData.count : 0;
                 const lineStr = `${countryName} - ${count}`;
@@ -56,7 +61,11 @@ export const MapChart: FunctionComponent<IMapProps> = props => {
                     data-tooltip-content={lineStr}
                     fill={count > 0 ? 'green' : '#fff'}
                     onClick={() => {
-                      navigate('/atlas/country/' + countryName);
+                      if (props.location === 'Japan' && props.onRegionClick) {
+                        props.onRegionClick(countryName);
+                      } else {
+                        navigate('/atlas/country/' + countryName);
+                      }
                     }}
                     onMouseEnter={event => {}}
                     onMouseLeave={() => {
