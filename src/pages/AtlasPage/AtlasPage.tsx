@@ -48,12 +48,7 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
       const transformPrefectureName = (name: string): string => {
         if (!name || name === 'Unknown') return name;
         const capitalized = name.charAt(0).toUpperCase() + name.slice(1);
-
-        if (capitalized === 'Tokyo') return 'Tokyo To';
-        if (capitalized === 'Osaka') return 'Osaka Fu';
-        if (capitalized === 'Kyoto') return 'Kyoto Fu';
-        if (capitalized === 'Hokkaido') return 'Hokkai Do';
-        return `${capitalized} Ken`;
+        return `${capitalized}`;
       };
 
       const fetchPrefectureData = async () => {
@@ -63,7 +58,7 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
         const apiData = await response.json();
         const transformedData = apiData.content.map((item: any) => ({
           _id: transformPrefectureName(item._id),
-          count: item.count
+          count: item.count,
         }));
 
         setPrefectureData(transformedData);
