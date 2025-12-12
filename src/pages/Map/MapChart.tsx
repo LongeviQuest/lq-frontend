@@ -49,7 +49,10 @@ export const MapChart: FunctionComponent<IMapProps> = props => {
           >
             {({ geographies }) =>
               geographies.map((geo: any) => {
-                const countryName = props.location === 'Japan' ? geo.properties.nam : geo.properties.name;
+                const countryName =
+                  props.location === 'Japan'
+                    ? geo.properties.nam
+                    : geo.properties.name;
                 const lqData = mapData[countryName];
                 const count = lqData ? lqData.count : 0;
                 const lineStr = `${countryName} - ${count}`;
