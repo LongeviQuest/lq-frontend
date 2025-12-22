@@ -19,6 +19,7 @@ import { OldestLivingPeopleEmbedPage } from './embeds/TopLivingEmbedPage/OldestL
 import { OldestLivingMenEmbedPage } from './embeds/TopLivingEmbedPage/OldestLivingMenEmbedPage';
 import { OldestPeopleEverEmbedPage } from './embeds/TopLivingEmbedPage/OldestPeopleEverEmbedPage';
 import { PortalCountryPage } from './pages/PortalCountryPage/PortalCountryPage';
+import { AllCountryPage } from './pages/AllByCountryPage/AllCountryPage';
 
 export const Kernel = () => {
   useEffect(() => {
@@ -55,7 +56,11 @@ export const Kernel = () => {
           <Route path="portal/:country" element={<PortalCountryPage />} />
           <Route path="continent/:continen" element={<AllByContinentPage />} />
           <Route path="country/:country" element={<AllByCountryPage />} />
-          <Route path="country/:country/:prefecture" element={<AllByPrefecturePage />} />
+          <Route path="country/:country/all" element={<AllCountryPage />} />
+          <Route
+            path="country/:country/:prefecture"
+            element={<AllByPrefecturePage />}
+          />
           <Route path="date" element={<AllByDatePage />} />
         </Route>
       </Route>

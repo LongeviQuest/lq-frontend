@@ -96,6 +96,11 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
     const country = props.title.toLowerCase();
     navigate(`/atlas/country/${country}/${prefectureForApi}`);
   };
+  const handleCountryAll = () => {
+    const country = props.title.toLowerCase();
+    navigate(`/atlas/country/${country}/all`);
+    console.log('country', country);
+  };
 
   // Render filter (only if not Japan)
   const renderFilter = () => {
@@ -151,16 +156,25 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
 
       {/* If Japan, show map only */}
       {props.title === 'Japan' ? (
-        <MapChart
-          data={prefectureData}
-          config={{
-            center: [130, 35],
-            scale: 1500,
-          }}
-          height={600}
-          location="Japan"
-          onRegionClick={handlePrefectureClick}
-        />
+        <>
+          <Button
+            className="filter"
+            colorScheme={'blue'}
+            onClick={handleCountryAll}
+          >
+            Oldest People in {props.title}
+          </Button>
+          <MapChart
+            data={prefectureData}
+            config={{
+              center: [130, 35],
+              scale: 1500,
+            }}
+            height={600}
+            location="Japan"
+            onRegionClick={handlePrefectureClick}
+          />
+        </>
       ) : (
         renderResults()
       )}
