@@ -74,7 +74,7 @@ export const FilteringForm: FunctionComponent<FilteringFormProps> = props => {
   const [finalDeathDateValue, setFinalDeathDateValue] = useState<
     string | undefined
   >('');
-  const [prefecture, setPrefecture] = useState<string>('');
+  const [state, setState] = useState<string>('');
 
   const updateQueryParams = (queryParams: Parameter[]) => {
     const searchParams = new URLSearchParams(location.search);
@@ -192,7 +192,7 @@ export const FilteringForm: FunctionComponent<FilteringFormProps> = props => {
       { key: 'orderBy', value: orderBy },
       { key: 'name', value: name },
       { key: 'direction', value: direction },
-      { key: 'prefecture', value: prefecture },
+      { key: 'state', value: state },
     ];
 
     updateQueryParams(parameters);
@@ -474,15 +474,15 @@ export const FilteringForm: FunctionComponent<FilteringFormProps> = props => {
             <Text size={'lg'}>State</Text>
             <Select
               size={'sm'}
-              defaultValue={getQueryParam('prefecture') ?? 'any'}
+              defaultValue={getQueryParam('state') ?? 'any'}
               onChange={event => {
-                setPrefecture(event.currentTarget.value);
+                setState(event.currentTarget.value);
               }}
             >
               <option value={'any'}>Any</option>
-              {mexicanStates.map((state: MexicanState) => (
-                <option key={state.slug} value={state.slug}>
-                  {state.name}
+              {mexicanStates.map((stateItem: MexicanState) => (
+                <option key={stateItem.slug} value={stateItem.slug}>
+                  {stateItem.name}
                 </option>
               ))}
             </Select>
