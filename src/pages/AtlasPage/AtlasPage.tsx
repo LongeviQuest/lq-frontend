@@ -117,7 +117,10 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
           Filter Results
         </Button>
         <Collapse in={showFilterForm}>
-          <FilteringForm defaultFilters={props.defaultFilters} />
+          <FilteringForm
+            defaultFilters={props.defaultFilters}
+            country={props.title}
+          />
         </Collapse>
       </div>
     );

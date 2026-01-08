@@ -12,6 +12,7 @@ import {
 import { FunctionComponent, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { countryReference } from '../../../data/countries-data';
+import { mexicanStates, type MexicanState } from '../../../data/mexico-states';
 
 import './FilteringForm.scss';
 
@@ -22,6 +23,7 @@ interface Parameter {
 
 interface FilteringFormProps {
   defaultFilters?: string[];
+  country?: string;
 }
 
 export const FilteringForm: FunctionComponent<FilteringFormProps> = props => {
@@ -72,6 +74,7 @@ export const FilteringForm: FunctionComponent<FilteringFormProps> = props => {
   const [finalDeathDateValue, setFinalDeathDateValue] = useState<
     string | undefined
   >('');
+  const [prefecture, setPrefecture] = useState<string>('');
 
   const updateQueryParams = (queryParams: Parameter[]) => {
     const searchParams = new URLSearchParams(location.search);
@@ -189,6 +192,7 @@ export const FilteringForm: FunctionComponent<FilteringFormProps> = props => {
       { key: 'orderBy', value: orderBy },
       { key: 'name', value: name },
       { key: 'direction', value: direction },
+      { key: 'prefecture', value: prefecture },
     ];
 
     updateQueryParams(parameters);
@@ -465,6 +469,25 @@ export const FilteringForm: FunctionComponent<FilteringFormProps> = props => {
             })}
           </Select>
         </Box>
+        {props.country?.toLowerCase() === 'mexico' && (
+          <Box className="input">
+            <Text size={'lg'}>State</Text>
+            <Select
+              size={'sm'}
+              defaultValue={getQueryParam('prefecture') ?? 'any'}
+              onChange={event => {
+                setPrefecture(event.currentTarget.value);
+              }}
+            >
+              <option value={'any'}>Any</option>
+              {mexicanStates.map((state: MexicanState) => (
+                <option key={state.slug} value={state.slug}>
+                  {state.name}
+                </option>
+              ))}
+            </Select>
+          </Box>
+        )}
         <Box className="input">
           <Text size={'lg'}>Direction</Text>
           <Select
