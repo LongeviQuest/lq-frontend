@@ -53,7 +53,7 @@ export const OldestLivingMenEmbedPage = () => {
       <TableEmbed
         content={data?.content ?? []}
         title="Oldest Living Men"
-        link="https://atlas.longeviquest.com/atlas/men"
+        link="https://atlas.longeviquest.com/atlas/living?validation=validated&finalValidationDateValue=&gender=Male&living=living"
         isLoaded={!isFetching}
       />
     </div>
