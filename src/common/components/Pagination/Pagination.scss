@@ -1,0 +1,27 @@
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem 0;
+  user-select: none;
+
+  button {
+    min-width: 40px;
+    font-weight: 600;
+
+    &:disabled,
+    &[disabled] {
+      cursor: not-allowed !important;
+      opacity: 0.4 !important;
+      pointer-events: none !important;
+      background-color: #e2e8f0 !important;
+      color: #a0aec0 !important;
+    }
+  }
+
+  .pagination-info {
+    min-width: 150px;
+    text-align: center;
+    color: #003058;
+  }
+}

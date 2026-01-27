@@ -9,6 +9,10 @@ export interface MapInfo {
   isLoaded?: boolean;
   hideCount?: boolean;
   showValidationDate?: boolean;
+  currentPage?: number;
+  itemsPerPage?: number;
+  onPageChange?: (page: number) => void;
+  onLimitChange?: (limit: number) => void;
 }
 
 export interface MapDataInfo {

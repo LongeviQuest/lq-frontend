@@ -7,7 +7,7 @@ import { FilteringForm } from './components/FilteringForm';
 import _ from 'lodash';
 import MapChart from '../Map/MapChart';
 import { configuration } from '../../services/configuration';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface AtlasPageProps {
   queryUrl: string;
@@ -25,12 +25,47 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
   const [data, setData] = useState<TopSCDataInfo>();
   const [prefectureData, setPrefectureData] = useState<any[]>([]);
   const navigate = useNavigate();
+  const location = useLocation();
   const showHeader = props.showHeader ?? true;
   const showFilter = props.showFilter ?? true;
   const [showFilterForm, setShowFilterForm] = useState<boolean>(false);
   const [isFetching, setIsFetching] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(25);
+
+  const updateUrlParams = (page: number, limit: number) => {
+    const params = new URLSearchParams(location.search);
+    params.set('page', page.toString());
+    params.set('limit', limit.toString());
+    navigate(`${location.pathname}?${params.toString()}`, { replace: true });
+  };
+
+  const handlePageChange = (page: number) => {
+    if (page >= 1) {
+      setCurrentPage(page);
+      updateUrlParams(page, itemsPerPage);
+    }
+  };
+
+  const handleLimitChange = (limit: number) => {
+    const currentFirstItem = (currentPage - 1) * itemsPerPage + 1;
+    const newPage = Math.ceil(currentFirstItem / limit);
+    setItemsPerPage(limit);
+    setCurrentPage(newPage);
+    updateUrlParams(newPage, limit);
+  };
 
   window.document.title = `${props.title} - LongeviQuest Atlas`;
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const page = parseInt(params.get('page') || '1');
+    const limit = parseInt(params.get('limit') || '25');
+
+    if (page !== currentPage) setCurrentPage(page);
+    if (limit !== itemsPerPage) setItemsPerPage(limit);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.search]);
 
   useEffect(() => {
     if (props.title !== 'Japan') {
@@ -41,7 +76,7 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
       };
       fetch();
     }
-  }, [props.urlParams]);
+  }, [props.urlParams, currentPage, itemsPerPage]);
 
   useEffect(() => {
     if (props.title === 'Japan') {
@@ -73,10 +108,10 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
       filter.push(`${x[0]}=${x[1]}`);
     });
 
-    const queryUrl =
-      filter.length > 0
-        ? `${props.queryUrl}?${filter.join('&')}`
-        : props.queryUrl;
+    filter.push(`page=${currentPage}`);
+    filter.push(`limit=${itemsPerPage}`);
+
+    const queryUrl = `${props.queryUrl}?${filter.join('&')}`;
 
     const response = await fetch(queryUrl);
     const data = await response.json();
@@ -143,6 +178,10 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
           hideCount={true}
           isLoaded={!isFetching}
           showValidationDate={props.showValidationDate}
+          currentPage={currentPage}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+          onLimitChange={handleLimitChange}
         />
       </>
     );

@@ -20,6 +20,7 @@ import { FiDownload } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { TablePlaceholder } from '../TablePlaceholder/TablePlaceholder';
 import { FlagComponent } from '../FlagComponent/FlagComponent';
+import { Pagination } from '../Pagination/Pagination';
 
 export const SupercentenariansList: FunctionComponent<MapInfo> = props => {
   const navigate = useNavigate();
@@ -124,11 +125,12 @@ export const SupercentenariansList: FunctionComponent<MapInfo> = props => {
                 if (personalInfo === null) {
                   return null;
                 }
+                const rankNumber = ((props.currentPage || 1) - 1) * (props.itemsPerPage || 25) + index + 1;
                 return (
                   <Tr id={value.slug} key={index}>
                     <Td id="Rank" width={'5rem'}>
                       <a className="circle" href={formatLink(value.link)}>
-                        {index + 1}
+                        {rankNumber}
                       </a>
                     </Td>
                     <Td id="Name" width={'15rem'}>
@@ -334,6 +336,15 @@ export const SupercentenariansList: FunctionComponent<MapInfo> = props => {
           gap={1}
         >
           {renderTools()}
+          {props.onPageChange && props.onLimitChange && (
+            <Pagination
+              currentPage={props.currentPage || 1}
+              totalItems={props.count}
+              itemsPerPage={props.itemsPerPage || 25}
+              onPageChange={props.onPageChange}
+              onLimitChange={props.onLimitChange}
+            />
+          )}
           <Box
             className="TableWrapper"
             height={props.panelInfo ?? 'calc(100vh - 200px)'}
