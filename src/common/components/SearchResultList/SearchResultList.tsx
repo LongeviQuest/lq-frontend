@@ -20,6 +20,7 @@ import { FiDownload } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { TablePlaceholder } from '../TablePlaceholder/TablePlaceholder';
 import { FlagComponent } from '../FlagComponent/FlagComponent';
+import { Pagination } from '../Pagination/Pagination';
 
 export const SearchResultList: FunctionComponent<MapInfo> = props => {
   const navigate = useNavigate();
@@ -68,7 +69,6 @@ export const SearchResultList: FunctionComponent<MapInfo> = props => {
           <Tbody>
             {!props.isLoaded ? <TablePlaceholder /> : <></>}
             {props.content.map((value, index) => {
-              const deathAndResidence = [];
               return (
                 <Tr key={index}>
                   <Td width={'20rem'}>
@@ -205,6 +205,15 @@ export const SearchResultList: FunctionComponent<MapInfo> = props => {
           />
         )}
       </Flex>
+      {props.onPageChange && props.onLimitChange && (
+        <Pagination
+          currentPage={props.currentPage || 1}
+          totalItems={props.count}
+          itemsPerPage={props.itemsPerPage || 25}
+          onPageChange={props.onPageChange}
+          onLimitChange={props.onLimitChange}
+        />
+      )}
       <Box
         className="TableWrapper"
         height={props.panelInfo ?? 'calc(100vh - 200px)'}
