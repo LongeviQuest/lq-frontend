@@ -1,5 +1,5 @@
-import { FunctionComponent } from 'react';
-import { Box, Button, Flex, Select } from '@chakra-ui/react';
+import { FunctionComponent, useState, KeyboardEvent, useEffect } from 'react';
+import { Box, Button, Flex, Select, Input } from '@chakra-ui/react';
 import { FiChevronsLeft, FiChevronLeft, FiChevronRight, FiChevronsRight } from 'react-icons/fi';
 import './Pagination.scss';
 
@@ -23,6 +23,7 @@ export const Pagination: FunctionComponent<PaginationProps> = ({
   const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
   const startItem = (currentPage - 1) * itemsPerPage + 1;
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+  const [pageInput, setPageInput] = useState<string>(currentPage.toString());
 
   const handleFirstPage = () => {
     if (currentPage > 1) {
@@ -52,15 +53,38 @@ export const Pagination: FunctionComponent<PaginationProps> = ({
     onLimitChange(Number(e.target.value));
   };
 
+  const handlePageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPageInput(e.target.value);
+  };
+
+  const handlePageInputSubmit = () => {
+    const page = parseInt(pageInput);
+    if (!isNaN(page) && page >= 1 && page <= totalPages) {
+      onPageChange(page);
+    } else {
+      setPageInput(currentPage.toString());
+    }
+  };
+
+  const handlePageInputKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handlePageInputSubmit();
+    }
+  };
+
   const isFirstPage = currentPage <= 1;
   const isLastPage = currentPage >= totalPages;
+
+  useEffect(() => {
+    setPageInput(currentPage.toString());
+  }, [currentPage]);
 
   if (totalItems === 0) {
     return null;
   }
 
   return (
-    <Flex className="pagination-container" alignItems="center" gap={4} py={4}>
+    <Flex className="pagination-container" alignItems="center" gap={2} py={4}>
       <Select
         value={itemsPerPage}
         onChange={handleLimitChange}
@@ -94,9 +118,26 @@ export const Pagination: FunctionComponent<PaginationProps> = ({
         <FiChevronLeft />
       </Button>
 
-      <Box className="pagination-info" fontSize="sm" fontWeight="500" px={2}>
-        {startItem} - {endItem} of {totalItems.toLocaleString()}
-      </Box>
+      <Flex alignItems="center" gap={1}>
+        <Box fontSize="sm" whiteSpace="nowrap">
+          Page
+        </Box>
+        <Input
+          value={pageInput}
+          onChange={handlePageInputChange}
+          onKeyPress={handlePageInputKeyPress}
+          onBlur={handlePageInputSubmit}
+          size="sm"
+          width="60px"
+          textAlign="center"
+          type="number"
+          min={1}
+          max={totalPages}
+        />
+        <Box fontSize="sm" whiteSpace="nowrap">
+          of {totalPages}
+        </Box>
+      </Flex>
 
       <Button
         onClick={handleNextPage}

@@ -10,17 +10,15 @@ import { useEffect, useState } from "react";
 import { TopSCDataInfo } from "../../data/top-sc";
 import { SearchResultList } from "../../common/components/SearchResultList/SearchResultList";
 import { useNavigate, useLocation } from 'react-router-dom';
-import { configuration } from '../../services/configuration';
 
 export const AllByContinentPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [topScData, setTopScData] = useState<TopSCDataInfo>();
-  const [continent, setContinent] = useState("");
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(25);
-   const queryUrl = `https://api.longeviquest.com/v1/queries/supercentenarians/recent_validations`;
+  const queryUrl = `https://api.longeviquest.com/v1/queries/supercentenarians/recent_validations`;
 
   const updateUrlParams = (page: number, limit: number) => {
     const params = new URLSearchParams(location.search);
