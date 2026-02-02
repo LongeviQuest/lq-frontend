@@ -13,6 +13,7 @@ import { FunctionComponent, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { countryReference } from '../../../data/countries-data';
 import { mexicanStates, type MexicanState } from '../../../data/mexico-states';
+import { usStates, type USState } from '../../../data/us-states';
 
 import './FilteringForm.scss';
 
@@ -481,6 +482,27 @@ export const FilteringForm: FunctionComponent<FilteringFormProps> = props => {
             >
               <option value={'any'}>Any</option>
               {mexicanStates.map((stateItem: MexicanState) => (
+                <option key={stateItem.slug} value={stateItem.slug}>
+                  {stateItem.name}
+                </option>
+              ))}
+            </Select>
+          </Box>
+        )}
+        {(props.country?.toLowerCase() === 'united states' ||
+          props.country?.toLowerCase() === 'usa' ||
+          props.country?.toLowerCase() === 'us') && (
+          <Box className="input">
+            <Text size={'lg'}>State</Text>
+            <Select
+              size={'sm'}
+              defaultValue={getQueryParam('state') ?? 'any'}
+              onChange={event => {
+                setState(event.currentTarget.value);
+              }}
+            >
+              <option value={'any'}>Any</option>
+              {usStates.map((stateItem: USState) => (
                 <option key={stateItem.slug} value={stateItem.slug}>
                   {stateItem.name}
                 </option>
