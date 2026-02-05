@@ -209,7 +209,7 @@ export const SearchResultList: FunctionComponent<MapInfo> = props => {
         <Pagination
           currentPage={props.currentPage || 1}
           totalItems={props.count}
-          itemsPerPage={props.itemsPerPage || 25}
+          itemsPerPage={props.itemsPerPage || 100}
           onPageChange={props.onPageChange}
           onLimitChange={props.onLimitChange}
         />

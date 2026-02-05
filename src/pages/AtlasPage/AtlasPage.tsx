@@ -31,12 +31,12 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
   const [showFilterForm, setShowFilterForm] = useState<boolean>(false);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(25);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(100);
 
   const updateUrlParams = (page: number, limit: number) => {
     const params = new URLSearchParams(location.search);
     params.set('page', page.toString());
-    params.set('limit', limit.toString());
+    params.set('limit', limit === -1 ? 'all' : limit.toString());
     navigate(`${location.pathname}?${params.toString()}`, { replace: true });
   };
 
@@ -49,7 +49,7 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
 
   const handleLimitChange = (limit: number) => {
     const currentFirstItem = (currentPage - 1) * itemsPerPage + 1;
-    const newPage = Math.ceil(currentFirstItem / limit);
+    const newPage = limit === -1 ? 1 : Math.ceil(currentFirstItem / limit);
     setItemsPerPage(limit);
     setCurrentPage(newPage);
     updateUrlParams(newPage, limit);
@@ -60,7 +60,8 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const page = parseInt(params.get('page') || '1');
-    const limit = parseInt(params.get('limit') || '25');
+    const limitParam = params.get('limit') || '100';
+    const limit = limitParam === 'all' ? -1 : parseInt(limitParam);
 
     if (page !== currentPage) setCurrentPage(page);
     if (limit !== itemsPerPage) setItemsPerPage(limit);
@@ -105,11 +106,14 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
   const fetchData = async () => {
     const filter: string[] = [];
     _.forEach(Array.from(props.urlParams?.entries() ?? []), x => {
-      filter.push(`${x[0]}=${x[1]}`);
+      if (x[0] !== 'page' && x[0] !== 'limit') {
+        filter.push(`${x[0]}=${x[1]}`);
+      }
     });
 
     filter.push(`page=${currentPage}`);
-    filter.push(`limit=${itemsPerPage}`);
+    const limitParam = itemsPerPage === -1 ? 'all' : itemsPerPage;
+    filter.push(`limit=${limitParam}`);
 
     const queryUrl = `${props.queryUrl}?${filter.join('&')}`;
 

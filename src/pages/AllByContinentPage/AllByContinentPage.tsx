@@ -17,13 +17,13 @@ export const AllByContinentPage = () => {
   const [topScData, setTopScData] = useState<TopSCDataInfo>();
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [itemsPerPage, setItemsPerPage] = useState<number>(25);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(100);
   const queryUrl = `https://api.longeviquest.com/v1/queries/supercentenarians/recent_validations`;
 
   const updateUrlParams = (page: number, limit: number) => {
     const params = new URLSearchParams(location.search);
     params.set('page', page.toString());
-    params.set('limit', limit.toString());
+    params.set('limit', limit === -1 ? 'all' : limit.toString());
     navigate(`${location.pathname}?${params.toString()}`, { replace: true });
   };
 
@@ -36,7 +36,7 @@ export const AllByContinentPage = () => {
 
   const handleLimitChange = (limit: number) => {
     const currentFirstItem = (currentPage - 1) * itemsPerPage + 1;
-    const newPage = Math.ceil(currentFirstItem / limit);
+    const newPage = limit === -1 ? 1 : Math.ceil(currentFirstItem / limit);
     setItemsPerPage(limit);
     setCurrentPage(newPage);
     updateUrlParams(newPage, limit);
@@ -45,7 +45,8 @@ export const AllByContinentPage = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const page = parseInt(params.get('page') || '1');
-    const limit = parseInt(params.get('limit') || '25');
+    const limitParam = params.get('limit') || '100';
+    const limit = limitParam === 'all' ? -1 : parseInt(limitParam);
 
     if (page !== currentPage) setCurrentPage(page);
     if (limit !== itemsPerPage) setItemsPerPage(limit);
@@ -62,7 +63,8 @@ export const AllByContinentPage = () => {
   }, [currentPage, itemsPerPage]);
 
   const fetchData = async () => {
-    const url = `${queryUrl}?page=${currentPage}&limit=${itemsPerPage}`;
+    const limitParam = itemsPerPage === -1 ? 'all' : itemsPerPage;
+    const url = `${queryUrl}?page=${currentPage}&limit=${limitParam}`;
     const response = await fetch(url);
     const data = await response.json();
     setTopScData(data);

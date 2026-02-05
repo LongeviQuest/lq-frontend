@@ -9,7 +9,7 @@ interface PaginationProps {
   itemsPerPage: number;
   onPageChange: (page: number) => void;
   onLimitChange: (limit: number) => void;
-  pageSizeOptions?: number[];
+  pageSizeOptions?: (number | string)[];
 }
 
 export const Pagination: FunctionComponent<PaginationProps> = ({
@@ -18,12 +18,16 @@ export const Pagination: FunctionComponent<PaginationProps> = ({
   itemsPerPage,
   onPageChange,
   onLimitChange,
-  pageSizeOptions = [10, 25, 50, 100],
+  pageSizeOptions = [25, 50, 100, 'all'],
 }) => {
-  const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
-  const startItem = (currentPage - 1) * itemsPerPage + 1;
-  const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+  const isShowingAll = itemsPerPage === -1;
+  const effectiveItemsPerPage = isShowingAll ? totalItems : itemsPerPage;
+  const totalPages = Math.max(1, Math.ceil(totalItems / effectiveItemsPerPage));
+  const startItem = (currentPage - 1) * effectiveItemsPerPage + 1;
+  const endItem = Math.min(currentPage * effectiveItemsPerPage, totalItems);
   const [pageInput, setPageInput] = useState<string>(currentPage.toString());
+
+  const selectValue = itemsPerPage === -1 ? 'all' : itemsPerPage.toString();
 
   const handleFirstPage = () => {
     if (currentPage > 1) {
@@ -50,7 +54,8 @@ export const Pagination: FunctionComponent<PaginationProps> = ({
   };
 
   const handleLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onLimitChange(Number(e.target.value));
+    const value = e.target.value;
+    onLimitChange(value === 'all' ? -1 : Number(value));
   };
 
   const handlePageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,14 +91,14 @@ export const Pagination: FunctionComponent<PaginationProps> = ({
   return (
     <Flex className="pagination-container" alignItems="center" gap={2} py={4}>
       <Select
-        value={itemsPerPage}
+        value={selectValue}
         onChange={handleLimitChange}
         width="80px"
         size="sm"
       >
         {pageSizeOptions.map(size => (
           <option key={size} value={size}>
-            {size}
+            {size === 'all' ? 'All' : size}
           </option>
         ))}
       </Select>

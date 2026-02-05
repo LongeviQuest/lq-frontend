@@ -125,7 +125,7 @@ export const SupercentenariansList: FunctionComponent<MapInfo> = props => {
                 if (personalInfo === null) {
                   return null;
                 }
-                const rankNumber = ((props.currentPage || 1) - 1) * (props.itemsPerPage || 25) + index + 1;
+                const rankNumber = ((props.currentPage || 1) - 1) * (props.itemsPerPage || 100) + index + 1;
                 return (
                   <Tr id={value.slug} key={index}>
                     <Td id="Rank" width={'5rem'}>
@@ -340,7 +340,7 @@ export const SupercentenariansList: FunctionComponent<MapInfo> = props => {
             <Pagination
               currentPage={props.currentPage || 1}
               totalItems={props.count}
-              itemsPerPage={props.itemsPerPage || 25}
+              itemsPerPage={props.itemsPerPage || 100}
               onPageChange={props.onPageChange}
               onLimitChange={props.onLimitChange}
             />
