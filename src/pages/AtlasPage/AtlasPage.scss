@@ -1,6 +1,6 @@
 .title_section {
   background: lightblue;
-  height: 200px;
+  // height: 200px;
   border-radius: 5px;
   margin: 10px 0;
   display: flex;
@@ -9,6 +9,7 @@
   justify-content: center;
   background: linear-gradient(180deg, #e9fbf4 0%, #c2ecfe 100%);
   text-transform: capitalize;
+  padding: 0.5em 1em;
 }
 
 .QueryResultListWrapper {

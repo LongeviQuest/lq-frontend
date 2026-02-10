@@ -55,7 +55,50 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
     updateUrlParams(newPage, limit);
   };
 
-  window.document.title = `${props.title} - LongeviQuest Atlas`;
+  const generateDynamicTitle = (): string => {
+    const params = new URLSearchParams(location.search);
+    const titleParts: string[] = ['Oldest'];
+
+    const living = params.get('living');
+    if (living === 'living' || props.defaultFilters?.includes('living')) {
+      titleParts.push('Living');
+    }
+    const gender = params.get('gender');
+    if (gender === 'Male' || props.defaultFilters?.includes('men')) {
+      titleParts.push('Men');
+    } else if (gender === 'Female' || props.defaultFilters?.includes('women')) {
+      titleParts.push('Women');
+    } else {
+      titleParts.push('People');
+    }
+
+    let title = titleParts.join(' ');
+    const countryOfDeath = params.get('countryOfDeath');
+    const countryOfBirth = params.get('countryOfBirth');
+    let country = null;
+    if (props.isAboutGeography && props.title && props.title.length > 0) {
+      country = props.title.charAt(0).toUpperCase() + props.title.slice(1);
+    } else if (countryOfDeath && countryOfDeath !== 'any') {
+      country = countryOfDeath;
+    } else if (countryOfBirth && countryOfBirth !== 'any') {
+      country = countryOfBirth;
+    } else if (props.title?.toLowerCase().includes('world')) {
+      country = 'World';
+    }
+
+    if (country) {
+      title += ` - ${country}`;
+    }
+    const validation = params.get('validation');
+    if (
+      validation === 'validated' ||
+      props.defaultFilters?.includes('validated')
+    ) {
+      title += ' (Validated)';
+    }
+
+    return title;
+  };
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -65,6 +108,8 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
 
     if (page !== currentPage) setCurrentPage(page);
     if (limit !== itemsPerPage) setItemsPerPage(limit);
+
+    window.document.title = `${generateDynamicTitle()} - LongeviQuest Atlas`;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
 
@@ -195,7 +240,7 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
     <div className="results">
       {showHeader && (
         <div className="title_section">
-          <h1>{props.title}</h1>
+          <h1>{generateDynamicTitle()}</h1>
         </div>
       )}
       {props.children}
