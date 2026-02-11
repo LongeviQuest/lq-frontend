@@ -7,7 +7,12 @@ export const EmigrantPage = () => {
   const [params] = useSearchParams();
   return (
     <div className="results">
-      <AtlasPage urlParams={params} queryUrl={queryUrl} title={'Emigrants'} />
+      <AtlasPage
+        urlParams={params}
+        queryUrl={queryUrl}
+        title={'Emigrants'}
+        useStaticTitle={true}
+      />
     </div>
   );
 };

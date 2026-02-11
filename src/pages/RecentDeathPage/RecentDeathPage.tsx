@@ -13,6 +13,7 @@ export const RecentDeathPage = () => {
         queryUrl={queryUrl}
         title={'Recent Deaths'}
         defaultFilters={defaultFilters}
+        useStaticTitle={true}
       />
     </div>
   );

@@ -16,6 +16,7 @@ export const RecentValidPage = () => {
         title={'Recent Validations '}
         defaultFilters={defaultFilters}
         showValidationDate={true}
+        useStaticTitle={true}
       />
     </div>
   );

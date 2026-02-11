@@ -19,6 +19,7 @@ interface AtlasPageProps {
   showHeader?: boolean;
   showFilter?: boolean;
   showValidationDate?: boolean;
+  useStaticTitle?: boolean;
 }
 
 export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
@@ -56,6 +57,10 @@ export const AtlasPage: FunctionComponent<AtlasPageProps> = props => {
   };
 
   const generateDynamicTitle = (): string => {
+    if (props.useStaticTitle) {
+      return props.title;
+    }
+
     const params = new URLSearchParams(location.search);
     const titleParts: string[] = ['Oldest'];
 
